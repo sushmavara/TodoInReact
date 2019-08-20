@@ -55,6 +55,12 @@ const todoLists = (props) => {
         } 
     }
 
+    const handleAddNewTodoItemOnEnter = (listId,event) =>{
+        if(event.which === 13){
+            handleAddNewTodoItem(listId,inputRefs.get(listId));
+        }
+    }
+
     if(props.numberOfTodoLists ===0){
         todoListsContainer =<p className={classes.emptyTodoContainer}>No Todo Lists To display</p>
     }else {
@@ -67,7 +73,8 @@ const todoLists = (props) => {
                     <h2>{current.listTitle}</h2>
                 </div>
                 <div>
-                    <input placeholder="Add Your Todo Task" ref={setInputRefs(listID,React.createRef())}></input>
+                    <input placeholder="Add Your Todo Task" ref={setInputRefs(listID,React.createRef())} 
+                            onKeyPress={(event) => {handleAddNewTodoItemOnEnter(listID,event)}}></input>
                     <button className={classes.addTodoTaskBtn} 
                             onClick={() => {handleAddNewTodoItem(listID,inputRefs.get(listID))}}>
                         Add Todo

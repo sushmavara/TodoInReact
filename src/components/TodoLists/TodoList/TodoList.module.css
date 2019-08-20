@@ -1,0 +1,12 @@
+.todolistItems{
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+}
+
+.emptyTodoList{
+    margin-top:50px;
+    text-align: center;
+    font-size: 14px;
+    color:rgb(93, 87, 87);
+}

@@ -1,0 +1,105 @@
+.todoListWrapper{
+    display: flex;
+    flex-flow: column;
+}
+
+.todoListHeader{
+    display: flex;
+    justify-content: row;
+    background-color:  #edeef0;
+    margin: 0;
+    padding-top: 10px;
+    height: 50px;
+}
+.todoListWrapper div h2 {
+    color:black;
+    display: inline-flex;
+    text-align:center;
+    align-items: center;
+    justify-content: center;
+    margin-right: 35px;
+    width:100%;
+}
+
+.todoListWrapper > div >input[type="checkbox"] {
+    width:5%;
+    color:black;
+    text-align: center;
+    height: 20px;
+    zoom: 1.2;
+}
+
+.todoListWrapper input {
+    width:70%;
+    height: 30px;
+    border: 2px solid  #edeef0;
+    justify-content: center;
+    align-content: center;
+    margin:10px;
+    color:rgb(83, 79, 79);
+}
+
+.addTodoTaskBtn{
+    height: 35px;
+    margin-left: 10px;
+    background-color: #4285f4;
+    border:1px solid #0060ff;
+    color: rgb(253, 245, 245);
+}
+
+.addTodoTaskBtn:hover{
+    background-color: #0060ff;
+    cursor: pointer;
+}
+
+.todoListWrapper input ,.addTodoTaskBtn{
+    font-weight: bold;
+    font-size: 16px;
+    padding:2px 5px;
+    border-radius: 4px;
+}
+
+.todoList{
+    border: 1px solid #edeef0;
+    height: 380px;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+.todoListActionBar{
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+}
+.todoListActionBar button{
+    margin: 5px 10px;
+    border: 1px solid #4581e0;
+    border-radius: 5px;
+    height: 35px;
+    width :130px;
+    cursor: pointer;
+    color:#5b5e64;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.todoListActionBar button:hover{
+    cursor: pointer;
+    background-color: #1668eb;
+    color : #edeef0;
+}
+
+.todoListWrapper span{
+    font-size: 12px;
+    color:red;
+    margin:0px 0 0 15px;
+    visibility: hidden;
+}
+
+.emptyTodoContainer{
+    margin-top:200px;
+    font-size: 16px;
+    font-weight: bold;
+    color:rgb(88, 81, 81);
+    
+}

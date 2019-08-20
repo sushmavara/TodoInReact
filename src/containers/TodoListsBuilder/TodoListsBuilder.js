@@ -129,6 +129,7 @@ class TodoListsBuilder extends Component{
     }
 
     deleteTodoListHandler =() => {
+ 
         const stateObject= {
             ...this.state
         }
@@ -136,7 +137,8 @@ class TodoListsBuilder extends Component{
                                  {  if(cur.isSelected) result.push(cur.listId); return result;
                                 },[]);
         listIdsToDelete.forEach(element => {
-            const deleteIndex=stateObject.todoLists.findIndex((cur) => cur.id === listIdsToDelete);
+            debugger;
+            const deleteIndex=stateObject.todoLists.findIndex((cur) => cur.listId === element);
             stateObject.todoLists.splice(deleteIndex,1); 
             stateObject.numberOfTodoLists=stateObject.numberOfTodoLists-1;
         });      

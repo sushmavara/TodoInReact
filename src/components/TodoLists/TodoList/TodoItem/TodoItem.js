@@ -1,24 +1,25 @@
 import React from 'react'
-import classes from './TodoTask.module.css';
+import classes from './TodoItem.module.css';
 import DeleteTodo from '../../../../assets/todo-delete.png'
 import CompleteTodo from '../../../../assets/todo-complete.png'
 import TodoItemActionsContext from '../../../../context/todoItemActions'
 
-const todoItem = (props)=>{
-  let titleClass= props.todoInfo.isCompleted ?[classes.todoTitle ,classes.markComplete].join(" "): classes.todoTitle;
+const TodoItem = ({todoTitle,todoCompleted,todoItemId,todoListID})=>{
+
+  let titleClass= todoCompleted ?[classes.todoTitle ,classes.markComplete].join(" "): classes.todoTitle;
   return (<TodoItemActionsContext.Consumer>
     {
       (context) =>  (
         <li className={classes.todoTask}>
-          <input type="checkbox" name="todoSelect" onChange={()=>context.toggleTodoCheckedHandler(props.todoListID,props.todoInfo.id)}/>
+          <input type="checkbox" name="todoSelect" onChange={()=>context.toggleTodoCheckedHandler(todoListID,todoItemId)}/>
           <div className={titleClass}>
-            {props.todoInfo.title}
+            {todoTitle}
           </div>      
           <div> 
-            <button onClick={()=>context.toggleMarkCompleteHandler(props.todoListID,props.todoInfo.id)}>
+            <button onClick={()=>context.toggleMarkCompleteHandler(todoListID,todoItemId)}>
               <img src={CompleteTodo} alt="mark complete todo"/>
             </button>
-            <button onClick={()=>context.deleteTodoHandler(props.todoListID,props.todoInfo.id)}>
+            <button onClick={()=>context.deleteTodoHandler(todoListID,todoItemId)}>
               <img src={DeleteTodo} alt="delete todo"/>
             </button>  
           </div>            
@@ -28,4 +29,4 @@ const todoItem = (props)=>{
   );
 }
 
-export default todoItem;
+export default React.memo(TodoItem);

@@ -2,14 +2,16 @@ import React from 'react'
 import classes from './TodoList.module.css';
 import TodoTask from '../TodoList/TodoTask/TodoTask'
 
-const todoList = (props)=>{
+const TodoList = (props) => {
   let todoList = <div className={classes.emptyTodoList}>Empty Todo list</div>;
   if(props.todoListDetails.length !== 0){
     todoList = props.todoListDetails.map((current) =>{
       return (
-        <TodoTask key={current.id} 
-                  todoInfo={current} 
-                  todoListID={props.todoListID} />
+        <TodoTask key = {current.id} 
+                  todoTitle = {current.title} 
+                  todoCompleted = {current.isCompleted}
+                  todoItemId = { current.id}
+                  todoListID = {props.todoListID} />
         )
     });
   }
@@ -20,4 +22,4 @@ const todoList = (props)=>{
   );
 }
 
-export default todoList;
+export default TodoList;

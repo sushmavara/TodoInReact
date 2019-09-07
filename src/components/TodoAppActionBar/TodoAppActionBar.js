@@ -1,29 +1,28 @@
 import React from 'react'
-import classes from './TodoListHeader.module.css'
+import classes from './TodoAppActionBar.module.css'
 import Modal from '../../UI/Modal/Modal'
-import AddNewTodoListModal from '../DataModal/NewTodoList/NewTodoListModal'
-import DeleteTodoListModal from '../DataModal/DeleteTodoList/DeleteTodoListModal'
+import AddNewTodoListModal from '../DataModal/AddNewTodoListModal/AddNewTodoListModal'
+import DeleteTodoListModal from '../DataModal/DeleteTodoListModal/DeleteTodoListModal'
 
 const todoListAddModal = "showAddModal";
 const delteTodoListModal ="showDeleteModal";
 
-function todoListHeader(props){    
+const TodoAppActionBar = (props) => {    
   let modalWrapper = props.showAddModal? (<Modal show={props.showAddModal} 
                                           toggleModalState={() => props.modalStateHandler(todoListAddModal)}>
                                             <AddNewTodoListModal
-                                              cancelled={() => props.modalStateHandler(todoListAddModal)}
+                                              modalDisplayStateHandler={props.modalStateHandler}
                                               addNew = {props.addNewTodoHandler}
                                             />
                                           </Modal>)
                     :props.showDeleteModal?(<Modal show={props.showDeleteModal} 
                                             toggleModalState={() => props.modalStateHandler(delteTodoListModal)}>
                                               <DeleteTodoListModal
-                                                cancelled={() => props.modalStateHandler(delteTodoListModal)}
+                                                modalDisplayStateHandler={props.modalStateHandler}
                                                 deleteList={props.deleteTodoListHandler}
                                               />
                                             </Modal>)
                     :null;
-  console.log("sdsddsds")
   return(
     <div className={classes.todoListHeader}>
       {modalWrapper}
@@ -32,4 +31,4 @@ function todoListHeader(props){
     </div>
   )
 }
-export default React.memo(todoListHeader);
+export default TodoAppActionBar;

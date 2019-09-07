@@ -6,9 +6,9 @@ const Modal = (props) =>{
   return (
     <React.Fragment>
       <BackDrop showBackDrop={props.show} clicked={props.toggleModalState}/>
-        <div className={classes.modal}>
-          {props.children}
-        </div>
+      <div className={classes.modal}>
+        {props.children}
+      </div>
     </React.Fragment>);
 }
 

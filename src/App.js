@@ -1,11 +1,11 @@
 import React from 'react';
-import Header from './components/Header/Header'
+import AppHeader from './components/AppHeader/AppHeader'
 import TodoListsBuilder from './containers/TodoListsBuilder/TodoListsBuilder'
 
 function App() {
   return (
     <div>
-      <Header/>
+      <AppHeader/>
       <TodoListsBuilder/>
     </div>
   );

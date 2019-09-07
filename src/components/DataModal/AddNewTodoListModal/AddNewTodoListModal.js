@@ -1,7 +1,9 @@
 import React from 'react'
-import classes from './NewTodoListModal.module.css';
 
-export const newTodoListModal = (props) => {
+const todoListAddModal = "showAddModal";
+
+
+export const AddNewTodoListModal = (props) => {
   const addList = React.createRef();
   const titleError = React.createRef();
 
@@ -14,7 +16,11 @@ export const newTodoListModal = (props) => {
     }
   }
 
-  return (<div className={classes.newTodoListModal}>
+  const addNewTodoListModalDisplayHandler = () =>{
+    props.modalDisplayStateHandler(todoListAddModal);
+  }
+
+  return (<div>
             <div>
               <h3>Add New Todo List</h3>
             </div>
@@ -29,11 +35,11 @@ export const newTodoListModal = (props) => {
               </span>
             </div>
             <div>
-              <button onClick={props.cancelled}>Cancel</button>
+              <button onClick={addNewTodoListModalDisplayHandler}>Cancel</button>
               <button onClick={validateAndAddNewList}>Add</button>
             </div>
           </div>
   );
 }
 
-export default newTodoListModal;
+export default AddNewTodoListModal;

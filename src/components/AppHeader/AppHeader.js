@@ -1,7 +1,7 @@
 import React from 'react'
-import classes from './Header.module.css'
+import classes from './AppHeader.module.css'
 
-const header = () =>{
+const AppHeader = () =>{
   return (
     <div className={classes.header}>
       TODO APP
@@ -9,4 +9,4 @@ const header = () =>{
   )
 }
 
-export default header;
+export default AppHeader;

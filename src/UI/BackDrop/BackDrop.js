@@ -1,9 +1,12 @@
-import React from 'react'
+import React from './node_modules/react'
 import classes from './BackDrop.module.css'
 
-const backDrop = (props) =>{
+const BackDrop = (props) =>{
   return (props.showBackDrop) ? <div className={classes.backDrop} onClick={props.clicked}></div> : null;
 }
 
+export default BackDrop;
 
-export default backDrop;
+//proptype 
+//ui
+//generic modal : header footer body

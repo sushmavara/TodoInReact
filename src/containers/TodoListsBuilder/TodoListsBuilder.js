@@ -2,8 +2,7 @@ import React , {Component} from 'react'
 import classes from './TodoListsBuilder.module.css'
 import TodoLists from '../../components/TodoLists/TodoLists'
 import addIcon from '../../assets/add_todo_list.png'
-import TodoListHeader from '../../components/TodoListHeader/TodoListHeader'
-import TodoItem from '../../modals/TodoItem'
+import TodoAppActionBar from '../../components/TodoAppActionBar/TodoAppActionBar'
 import TodoItemActionsContext from '../../context/todoItemActions'
 
 class TodoListsBuilder extends Component {
@@ -43,7 +42,8 @@ class TodoListsBuilder extends Component {
   }
 
   addNewTodoItemHandler = (listId, title) => {
-    const newTodoItem = new TodoItem(title);
+
+    const newTodoItem = {title: title,id:Date.now().toString(),isCompleted:false,isChecked:false}
     const stateObject = {
       ...this.state
     }
@@ -77,7 +77,7 @@ class TodoListsBuilder extends Component {
       ...this.state
     }
     const [todoItem, ] = this.getCheckedTodoItem(stateObject, listId, itemId);
-    todoItem.toggleMarkComplete();
+    todoItem.isCompleted = !todoItem.isCompleted;
     this.setState({
       todoLists: stateObject.todoLists
     });
@@ -88,7 +88,7 @@ class TodoListsBuilder extends Component {
       ...this.state
     }
     const [todoItem, ] = this.getCheckedTodoItem(stateObject, listId, itemId);
-    todoItem.markComplete();
+    todoItem.isCompleted = true;
     this.setState({
       todoLists: stateObject.todoLists
     });
@@ -99,7 +99,7 @@ class TodoListsBuilder extends Component {
       ...this.state
     }
     const [todoItem, ] = this.getCheckedTodoItem(stateObject, listId, itemId);
-    todoItem.toggleChecked();
+    todoItem.isChecked = !todoItem.isChecked;
     this.setState({
       todoLists: stateObject.todoLists
     });
@@ -159,7 +159,7 @@ class TodoListsBuilder extends Component {
         }
       return(
         <React.Fragment>
-          <TodoListHeader modalStateHandler={this.toggleModalDisplay}
+          <TodoAppActionBar modalStateHandler={this.toggleModalDisplay}
                           showAddModal={this.state.showAddModal} 
                           showDeleteModal={this.state.showDeleteModal}
                           addNewTodoHandler={this.addNewTodoListHandler}  

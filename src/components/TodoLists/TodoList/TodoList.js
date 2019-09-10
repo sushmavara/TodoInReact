@@ -6,6 +6,7 @@ import TodoListHeader from './TodoListHeader/TodoListHeader'
 import TodoListActions from './TodoListActions/TodoListActions'
 import { noop } from '@babel/types';
 import TodoItemActionsContext from '../../../context/TodoItemActionsContext'
+const _ = require('lodash');
 
 class TodoList extends Component{
 
@@ -13,19 +14,19 @@ class TodoList extends Component{
 
   getCheckedTodoItems = () => {
     let todoItemList= this.props.todoListInfo.listItems;
-    return todoItemList.filter((item) => item.isChecked);
+    return _.filter(todoItemList,(item) => item.isChecked);
   }
 
   deleteSelectedTodos = () => {
     const checkedTodos = this.getCheckedTodoItems();
-    checkedTodos.forEach((todoItem)=>{
+    _.forEach(checkedTodos,(todoItem)=>{
       this.context.deleteTodoItemHandler(this.props.todoListId, todoItem.id);
     });
   }
 
   marCompleteSelectedTodos = () => {
     const checkedTodos = this.getCheckedTodoItems();
-    checkedTodos.forEach((todoItem)=>{
+    _.forEach(checkedTodos,(todoItem)=>{
       this.context.markCompleteTodoItemHandler(this.props.todoListId, todoItem.id ,false);
     });
   }
@@ -45,8 +46,8 @@ class TodoList extends Component{
     let {listItems,listTitle} = todoListInfo;
 
     let todoItemList = <div className={classes.emptyTodoList}>Empty Todo list</div>;
-    if(listItems.length !== 0){
-      todoItemList = listItems.map((todoItem) =>{
+    if(!(_.isEmpty(listItems))){
+      todoItemList = _.map(listItems,(todoItem) =>{
         return (
           <TodoItem key = {todoItem.id} 
                     todoTitle = {todoItem.title} 

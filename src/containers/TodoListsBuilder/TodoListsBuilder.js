@@ -5,6 +5,7 @@ import TodoAppActionBar from '../../components/TodoAppActionBar/TodoAppActionBar
 import TodoItemActionsContext from '../../context/TodoItemActionsContext'
 import AddNewTodoListModal from '../../components/TodoListDataModal/AddNewTodoListModal/AddNewTodoListModal'
 import DeleteTodoListModal from '../../components/TodoListDataModal/DeleteTodoListModal/DeleteTodoListModal'
+const _ = require('lodash');
 
 
 class TodoListsBuilder extends Component {
@@ -24,11 +25,11 @@ class TodoListsBuilder extends Component {
   }
 
   getTodoListIndex = (listId) =>{
-    return this.state.todoLists.findIndex((todoList)=>todoList.listId === listId)
+    return _.findIndex(this.state.todoLists,(todoList)=> todoList.listId === listId);
   }
 
   getTodoItemIndex = (listItems, itemId) =>{
-    return listItems.findIndex((todoItem) => todoItem.id === itemId);
+    return _.findIndex(listItems,(todoItem) => todoItem.id === itemId);
   }
 
   addNewTodoListHandler = (title) => {
@@ -46,6 +47,7 @@ class TodoListsBuilder extends Component {
   }
 
   toggleTodoListCheckedHandler = (listId) => {
+    debugger;
     const updatedTodoLists = this.state.todoLists;
     const listIndex = this.getTodoListIndex(listId);
     const todoList = updatedTodoLists[listIndex];
@@ -56,13 +58,9 @@ class TodoListsBuilder extends Component {
   }
 
   deleteSelectedTodoListHandler = () => {
+    debugger;
     const updatedTodoLists = this.state.todoLists;
-    const todoListIdsToDelete = updatedTodoLists.filter((todoList) => todoList.isSelected);
-    todoListIdsToDelete.forEach(currentList => {
-      const deleteIndex = updatedTodoLists.findIndex((todoList) => todoList.listId === currentList.listId);
-      updatedTodoLists.splice(deleteIndex, 1);
-    });
-
+    _.remove(updatedTodoLists,(todoList) => todoList.isSelected);
     this.setState({
       todoLists: updatedTodoLists,
       showTodoListDeleteModal: false,
@@ -111,11 +109,11 @@ class TodoListsBuilder extends Component {
   }
 
   deleteTodoItemHandler = (listId, itemId) => {
+    debugger;
     const updatedTodoLists = this.state.todoLists;
     const listIndex = this.getTodoListIndex(listId);
     const todoListItems =  updatedTodoLists[listIndex].listItems;
-    const itemIndex =this.getTodoItemIndex(todoListItems,itemId);
-    todoListItems.splice(itemIndex, 1);
+    _.remove(todoListItems,(todoItem)=> todoItem.id === itemId);
     this.setState({
       todoLists: updatedTodoLists
     });

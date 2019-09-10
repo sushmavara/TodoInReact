@@ -6,6 +6,7 @@ import {SHOW_TODO_LIST_ADD_DATA_MODAL} from '../../constants/TodoListDataModalCo
 import Button from '../../ui/Button/Button'
 import addIcon from '../../assets/add_todo_list.png'
 import { noop } from '@babel/types'
+const _ = require('lodash');
 
 class TodoLists extends Component {
 
@@ -17,7 +18,8 @@ class TodoLists extends Component {
     let todoListsContainer = "";
     let {todoLists} = this.props;
     let addListButton = null;
-    if(todoLists.length !== 0){
+    debugger;
+    if(!(_.isEmpty(todoLists))){
       addListButton = (
         <div>
           <Button classNames = {classes.addIcon} clicked={this.showAddTodoListModal}>
@@ -26,10 +28,10 @@ class TodoLists extends Component {
         </div>
       );
     }
-    if(!todoLists ||todoLists.length === 0 ){
+    if(_.isEmpty(todoLists)){
       todoListsContainer = (<p className={classes.emptyTodoContainer}>No Todo Lists To display</p>);
     } else {
-        todoListsContainer = todoLists.map((todoList) => {
+        todoListsContainer = _.map(todoLists,(todoList) => {
           return (
               <TodoList key={todoList.listId} 
                          todoListInfo ={todoList}

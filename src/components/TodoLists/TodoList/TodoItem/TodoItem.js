@@ -1,32 +1,57 @@
-import React from 'react'
+import React,{Component} from 'react'
 import classes from './TodoItem.module.css';
 import DeleteTodo from '../../../../assets/todo-delete.png'
 import CompleteTodo from '../../../../assets/todo-complete.png'
-import TodoItemActionsContext from '../../../../context/todoItemActions'
+import TodoItemActionsContext from '../../../../context/TodoItemActionsContext'
+import PropTypes from 'prop-types';
+import Button from '../../../../ui/Button/Button';
 
-const TodoItem = ({todoTitle,todoCompleted,todoItemId,todoListID})=>{
+class TodoItem extends Component{
+  static contextType = TodoItemActionsContext;
 
-  let titleClass= todoCompleted ?[classes.todoTitle ,classes.markComplete].join(" "): classes.todoTitle;
-  return (<TodoItemActionsContext.Consumer>
-    {
-      (context) =>  (
-        <li className={classes.todoTask}>
-          <input type="checkbox" name="todoSelect" onChange={()=>context.toggleTodoCheckedHandler(todoListID,todoItemId)}/>
-          <div className={titleClass}>
-            {todoTitle}
-          </div>      
-          <div> 
-            <button onClick={()=>context.toggleMarkCompleteHandler(todoListID,todoItemId)}>
-              <img src={CompleteTodo} alt="mark complete todo"/>
-            </button>
-            <button onClick={()=>context.deleteTodoHandler(todoListID,todoItemId)}>
-              <img src={DeleteTodo} alt="delete todo"/>
-            </button>  
-          </div>            
-        </li>)
-    }
-    </TodoItemActionsContext.Consumer>
-  );
+  updateTodoItemCheckStatus = () =>{
+    this.context.toggleTodoItemCheckedHandler(this.props.todoListId,this.props.todoItemId)
+  }
+
+  updateTodoItemMarkCompleteStatus = () =>{
+    this.context.markCompleteTodoItemHandler(this.props.todoListId,this.props.todoItemId,true);
+  }
+
+  deleteTodoItem = () =>{
+    this.context.deleteTodoItemHandler(this.props.todoListId,this.props.todoItemId)
+  }
+
+  render () {
+    let titleClassName= this.props.todoCompleted ?[classes.todoTitle ,classes.markComplete].join(" "): classes.todoTitle;
+    return (
+      <li className={classes.todoTask}>
+        <input type="checkbox" name="todoSelect" onChange={this.updateTodoItemCheckStatus}/>
+        <div className={titleClassName}>
+          {this.props.todoTitle}
+        </div>      
+        <div> 
+          <Button clicked={this.updateTodoItemMarkCompleteStatus}>
+            <img src={CompleteTodo} alt="mark complete todo"/>
+          </Button>
+          <Button clicked={this.deleteTodoItem}>
+            <img src={DeleteTodo} alt="delete todo"/>
+          </Button>  
+        </div>            
+      </li>
+    );
+  }
 }
 
-export default React.memo(TodoItem);
+
+TodoItem.propTypes ={
+  todoTitle: PropTypes.string.isRequired,
+  todoCompleted: PropTypes.bool,
+  todoItemId: PropTypes.string.isRequired,
+  todoListId: PropTypes.string.isRequired
+}
+
+TodoItem.defaultProps = {
+  todoCompleted: false
+}
+
+export default TodoItem;

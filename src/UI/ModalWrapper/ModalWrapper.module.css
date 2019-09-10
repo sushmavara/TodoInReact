@@ -15,20 +15,9 @@
 }
 
 .modal button {
-    font-weight: bold;
-    background-color: #4285f4;
-    border-radius: 3px;
-    border:1px solid #0060ff;
-    color: rgb(253, 245, 245);
-    font-size: 16px;
     padding: 6px;
-    margin: 15px 3px 5px 10px;
+    margin: 15px 15px 10px 10px;
     width : 70px; 
-}
-
-.modal button:hover{
-    cursor: pointer;
-    background-color: #0060ff;
 }
 
 .modal h3{
@@ -56,13 +45,17 @@
 
 .modal label{
     display:block;
-    width:100%;
+    width:90%;
     margin:15px 10px 5px 30px;
     font-size: 16px;
 } 
 
-.modal div div:last-child{
-    margin:10px 30px 5px 0;
+.modal section{
+    min-height: 120px;
+}
+
+.modal footer{
+    border-top : 1px solid #dcdddf;
     display: flex;
     justify-content: flex-end;
 }

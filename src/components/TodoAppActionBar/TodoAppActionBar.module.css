@@ -6,20 +6,8 @@
 }
 
 .todoListHeader button {
-    padding: 5px;
-    margin: 10px 40px;
-    width : 170px;
-    font-size: 15px;
-    font-weight: bold;
-    background-color: #4285f4;
-    border:1px solid #0060ff;
-    color: rgb(253, 245, 245);
-}
-
-.todoListHeader button:hover,.todoListHeader button:active{
-    cursor: pointer;
-    background-color: #0060ff;
-    border-radius: 1px;
+   width:160px;
+   height: 40px;
 }
 
 

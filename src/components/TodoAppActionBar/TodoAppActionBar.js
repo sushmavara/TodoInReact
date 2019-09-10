@@ -1,34 +1,30 @@
-import React from 'react'
-import classes from './TodoAppActionBar.module.css'
-import Modal from '../../UI/Modal/Modal'
-import AddNewTodoListModal from '../DataModal/AddNewTodoListModal/AddNewTodoListModal'
-import DeleteTodoListModal from '../DataModal/DeleteTodoListModal/DeleteTodoListModal'
-
-const todoListAddModal = "showAddModal";
-const delteTodoListModal ="showDeleteModal";
+import React from 'react';
+import classes from './TodoAppActionBar.module.css';
+import {SHOW_TODO_LIST_ADD_DATA_MODAL,SHOW_TODO_LIST_DELETE_MODAL} from '../../constants/TodoListDataModalConstants'
+import PropTypes from 'prop-types';
+import Button from '../../ui/Button/Button';
 
 const TodoAppActionBar = (props) => {    
-  let modalWrapper = props.showAddModal? (<Modal show={props.showAddModal} 
-                                          toggleModalState={() => props.modalStateHandler(todoListAddModal)}>
-                                            <AddNewTodoListModal
-                                              modalDisplayStateHandler={props.modalStateHandler}
-                                              addNew = {props.addNewTodoHandler}
-                                            />
-                                          </Modal>)
-                    :props.showDeleteModal?(<Modal show={props.showDeleteModal} 
-                                            toggleModalState={() => props.modalStateHandler(delteTodoListModal)}>
-                                              <DeleteTodoListModal
-                                                modalDisplayStateHandler={props.modalStateHandler}
-                                                deleteList={props.deleteTodoListHandler}
-                                              />
-                                            </Modal>)
-                    :null;
-  return(
+
+  const displayAddNewTodoListModal = () =>{
+    props.modalStateHandler(SHOW_TODO_LIST_ADD_DATA_MODAL,true);
+  }
+
+  const displayDeleteTodoListModal = () =>{
+    props.modalStateHandler(SHOW_TODO_LIST_DELETE_MODAL,true);
+  }
+
+  let isDeleteBtnDisabled = props.todoListsLength === 0;
+
+  return (
     <div className={classes.todoListHeader}>
-      {modalWrapper}
-      <button onClick={()=>props.modalStateHandler(todoListAddModal)}> Add New Todo List </button>
-      <button onClick={()=>props.modalStateHandler(delteTodoListModal)}> Delete Lists</button>
+      <Button clicked={displayAddNewTodoListModal}> Add New Todo List </Button>
+      <Button clicked={displayDeleteTodoListModal} isDisabled={isDeleteBtnDisabled}> Delete Todo List </Button>
     </div>
   )
 }
 export default TodoAppActionBar;
+
+TodoAppActionBar.propTypes = {
+  modalStateHandler: PropTypes.func.isRequired
+}

@@ -1,183 +1,149 @@
 import React , {Component} from 'react'
 import classes from './TodoListsBuilder.module.css'
 import TodoLists from '../../components/TodoLists/TodoLists'
-import addIcon from '../../assets/add_todo_list.png'
-import TodoListHeader from '../../components/TodoListHeader/TodoListHeader'
-import TodoItem from '../../modals/TodoItem'
-import TodoItemActionsContext from '../../context/todoItemActions'
+import TodoAppActionBar from '../../components/TodoAppActionBar/TodoAppActionBar'
+import TodoItemActionsContext from '../../context/TodoItemActionsContext'
+import AddNewTodoListModal from '../../components/TodoListDataModal/AddNewTodoListModal/AddNewTodoListModal'
+import DeleteTodoListModal from '../../components/TodoListDataModal/DeleteTodoListModal/DeleteTodoListModal'
+
 
 class TodoListsBuilder extends Component {
   constructor(props) {
     super(props);
     this.state = {
       todoLists: [],
-      showAddModal: false,
-      showDeleteModal: false
+      showTodoListAddDataModal: false,
+      showTodoListDeleteModal: false,
     }
   }
 
-  toggleModalDisplay = (modalName) => {
-    const updatedState = {
-      ...this.state
-    }
-    updatedState[[modalName]] = !updatedState[[modalName]];
+  toggleModalDisplay = (modalName, modalState) => {
     this.setState({
-      [modalName]: updatedState[[modalName]]
+      [modalName] : modalState
     });
   }
 
+  getTodoListIndex = (listId) =>{
+    return this.state.todoLists.findIndex((todoList)=>todoList.listId === listId)
+  }
+
+  getTodoItemIndex = (listItems, itemId) =>{
+    return listItems.findIndex((todoItem) => todoItem.id === itemId);
+  }
+
   addNewTodoListHandler = (title) => {
-    const stateObject = {
-      ...this.state
-    }
-    stateObject.todoLists.push({
+    const updatedTodoLists = this.state.todoLists;
+    updatedTodoLists.push({
       listId: Date.now().toString(),
-      listDetails: [],
+      listItems: [],
       listTitle: title,
       isSelected: false
     });
     this.setState({
-      todoLists: stateObject.todoLists,
-      showAddModal: false,
-    });
-  }
-
-  addNewTodoItemHandler = (listId, title) => {
-    const newTodoItem = new TodoItem(title);
-    const stateObject = {
-      ...this.state
-    }
-    const todoList = stateObject.todoLists.reduce((result, current) => {
-      result = current.listId === listId ? result[result.length] = current : result;
-      return result
-    }, []);
-    todoList.listDetails.unshift(newTodoItem);
-    this.setState({
-      todoLists: stateObject.todoLists
-    })
-  }
-
-  getCheckedTodoItem = (stateObject, listId, itemId) => {
-    const todoList = stateObject.todoLists.reduce((result, current) => {
-      if (current.listId === listId) result.push(current);
-      return result;
-    }, [])[0];
-    let todoItem = [];
-    if (itemId && itemId !== null) {
-      todoItem = todoList.listDetails.reduce((result, current) => {
-        if (current.id === itemId) result.push(current);
-        return result;
-      }, [])[0];
-    }
-    return [todoItem, todoList];
-  }
-
-  toggleMarkCompleteHandler = (listId, itemId) => {
-    const stateObject = {
-      ...this.state
-    }
-    const [todoItem, ] = this.getCheckedTodoItem(stateObject, listId, itemId);
-    todoItem.toggleMarkComplete();
-    this.setState({
-      todoLists: stateObject.todoLists
-    });
-  }
-
-  markCompleteSelectedTodos = (listId, itemId) => {
-    const stateObject = {
-      ...this.state
-    }
-    const [todoItem, ] = this.getCheckedTodoItem(stateObject, listId, itemId);
-    todoItem.markComplete();
-    this.setState({
-      todoLists: stateObject.todoLists
-    });
-  }
-
-  toggleTodoCheckedHandler = (listId, itemId) => {
-    const stateObject = {
-      ...this.state
-    }
-    const [todoItem, ] = this.getCheckedTodoItem(stateObject, listId, itemId);
-    todoItem.toggleChecked();
-    this.setState({
-      todoLists: stateObject.todoLists
-    });
-  }
-
-  deleteTodoHandler = (listId, itemId) => {
-    const stateObject = {
-      ...this.state
-    }
-    const [todoItem, todoList] = this.getCheckedTodoItem(stateObject, listId, itemId);
-    const deleteIndex = todoList.listDetails.findIndex((cur) => cur.id === todoItem.id);
-    todoList.listDetails.splice(deleteIndex, 1);
-    this.setState({
-      todoLists: stateObject.todoLists
+      todoLists: updatedTodoLists,
+      showTodoListAddDataModal: false,
     });
   }
 
   toggleTodoListCheckedHandler = (listId) => {
-    const stateObject = {
-      ...this.state
-    }
-    const [, todoList] = this.getCheckedTodoItem(stateObject, listId);
+    const updatedTodoLists = this.state.todoLists;
+    const listIndex = this.getTodoListIndex(listId);
+    const todoList = updatedTodoLists[listIndex];
     todoList.isSelected = !todoList.isSelected;
     this.setState({
-      todoLists: stateObject.todoLists
+      todoLists: updatedTodoLists
     });
   }
 
-  deleteTodoListHandler = () => {
-    const stateObject = {
-      ...this.state
-    }
-    const listIdsToDelete = stateObject.todoLists.reduce((result, cur) => {
-      if (cur.isSelected) result.push(cur.listId);
-      return result;
-    }, []);
-    listIdsToDelete.forEach(element => {
-      const deleteIndex = stateObject.todoLists.findIndex((cur) => cur.listId === element);
-      stateObject.todoLists.splice(deleteIndex, 1);
+  deleteSelectedTodoListHandler = () => {
+    const updatedTodoLists = this.state.todoLists;
+    const todoListIdsToDelete = updatedTodoLists.filter((todoList) => todoList.isSelected);
+    todoListIdsToDelete.forEach(currentList => {
+      const deleteIndex = updatedTodoLists.findIndex((todoList) => todoList.listId === currentList.listId);
+      updatedTodoLists.splice(deleteIndex, 1);
     });
 
     this.setState({
-      todoLists: stateObject.todoLists,
-      showDeleteModal: false,
+      todoLists: updatedTodoLists,
+      showTodoListDeleteModal: false,
     });
   }
-    
+
+  addNewTodoItemHandler = (listId, title) => {
+    const updatedTodoLists = this.state.todoLists;
+    const newTodoItem = { 
+      title: title, 
+      id:Date.now().toString(), 
+      isCompleted:false, 
+      isChecked:false
+    };
+    const listIndex = this.getTodoListIndex(listId);
+    updatedTodoLists[listIndex].listItems =[newTodoItem,...updatedTodoLists[listIndex].listItems];
+    this.setState({
+      todoLists: updatedTodoLists
+    })
+  }
+
+  markCompleteTodoItemHandler = (listId, itemId, isToggle) => {
+    const updatedTodoLists = this.state.todoLists;
+    const listIndex = this.getTodoListIndex(listId);
+    const todoListItems =  updatedTodoLists[listIndex].listItems;
+    const itemIndex = this.getTodoItemIndex(todoListItems,itemId);
+    if(isToggle){
+      todoListItems[itemIndex].isCompleted = !todoListItems[itemIndex].isCompleted;
+    }else{
+      todoListItems[itemIndex].isCompleted = true;
+    }
+    this.setState({
+      todoLists: updatedTodoLists
+    });
+  }
+
+  toggleTodoItemCheckedHandler = (listId, itemId) => {
+    const updatedTodoLists = this.state.todoLists;
+    const listIndex = this.getTodoListIndex(listId);
+    const todoListItems =  updatedTodoLists[listIndex].listItems;
+    const itemIndex =this.getTodoItemIndex(todoListItems,itemId);
+    todoListItems[itemIndex].isChecked = !todoListItems[itemIndex].isChecked;
+    this.setState({
+      todoLists: updatedTodoLists
+    });
+  }
+
+  deleteTodoItemHandler = (listId, itemId) => {
+    const updatedTodoLists = this.state.todoLists;
+    const listIndex = this.getTodoListIndex(listId);
+    const todoListItems =  updatedTodoLists[listIndex].listItems;
+    const itemIndex =this.getTodoItemIndex(todoListItems,itemId);
+    todoListItems.splice(itemIndex, 1);
+    this.setState({
+      todoLists: updatedTodoLists
+    });
+  }
 
   render(){
-    let addListButton = null;
-      if(this.state.todoLists.length !== 0){
-        addListButton = (<div>
-            <button className = {classes.addIcon} onClick={()=>this.toggleModalDisplay("showAddModal")} >
-              <img src = {addIcon} alt = "add todo list"></img>
-            </button>
-          </div>);
-        }
-      return(
-        <React.Fragment>
-          <TodoListHeader modalStateHandler={this.toggleModalDisplay}
-                          showAddModal={this.state.showAddModal} 
-                          showDeleteModal={this.state.showDeleteModal}
-                          addNewTodoHandler={this.addNewTodoListHandler}  
-                          deleteTodoListHandler={this.deleteTodoListHandler} />
-          <div className={classes.todoListsContainer}>
-            <TodoItemActionsContext.Provider value={{ toggleTodoCheckedHandler: this.toggleTodoCheckedHandler,
-                                                      toggleMarkCompleteHandler: this.toggleMarkCompleteHandler ,
-                                                      deleteTodoHandler: this.deleteTodoHandler  }} >
-              <TodoLists todoLists={this.state.todoLists}
-                          addNewTodo= {this.addNewTodoItemHandler}
-                          markCompleteHandler={this.markCompleteSelectedTodos }
-                          deleteTodoHandler={this.deleteTodoHandler}
-                          toggleTodoListCheckedHandler ={this.toggleTodoListCheckedHandler} />
-            </TodoItemActionsContext.Provider>
-              {addListButton}
-          </div>
-        </React.Fragment>  );
-    }
+    const { showTodoListAddDataModal,
+            showTodoListDeleteModal} = this.state;
+    return(
+      <React.Fragment>
+        <TodoAppActionBar modalStateHandler={this.toggleModalDisplay} todoListsLength={this.state.todoLists.length} />
+        <div className={classes.todoListsContainer}>
+          <TodoItemActionsContext.Provider value={{ toggleTodoItemCheckedHandler: this.toggleTodoItemCheckedHandler,
+                                                    markCompleteTodoItemHandler: this.markCompleteTodoItemHandler ,
+                                                    deleteTodoItemHandler: this.deleteTodoItemHandler ,
+                                                    toggleTodoListCheckedHandler : this.toggleTodoListCheckedHandler}}>
+            <TodoLists  todoLists={this.state.todoLists}
+                        addNewTodoItemHandler= {this.addNewTodoItemHandler}
+                        toggleModalDisplay={this.toggleModalDisplay} />
+          </TodoItemActionsContext.Provider>
+        </div>
+        {showTodoListAddDataModal && <AddNewTodoListModal addNewTodoListHandler={this.addNewTodoListHandler} 
+                                                          modalStateHandler={this.toggleModalDisplay}/>}
+        {showTodoListDeleteModal && <DeleteTodoListModal deleteSelectedTodoListHandler={this.deleteSelectedTodoListHandler} 
+                                                         modalStateHandler={this.toggleModalDisplay}/> }
+      </React.Fragment>  
+    );
+  }
 }
 
 export default TodoListsBuilder;

@@ -18,7 +18,6 @@ class TodoLists extends Component {
     let todoListsContainer = "";
     let {todoLists} = this.props;
     let addListButton = null;
-    debugger;
     if(!(_.isEmpty(todoLists))){
       addListButton = (
         <div>

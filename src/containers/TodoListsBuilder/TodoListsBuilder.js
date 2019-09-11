@@ -47,7 +47,6 @@ class TodoListsBuilder extends Component {
   }
 
   toggleTodoListCheckedHandler = (listId) => {
-    debugger;
     const updatedTodoLists = this.state.todoLists;
     const listIndex = this.getTodoListIndex(listId);
     const todoList = updatedTodoLists[listIndex];
@@ -58,7 +57,6 @@ class TodoListsBuilder extends Component {
   }
 
   deleteSelectedTodoListHandler = () => {
-    debugger;
     const updatedTodoLists = this.state.todoLists;
     _.remove(updatedTodoLists,(todoList) => todoList.isSelected);
     this.setState({
@@ -109,7 +107,6 @@ class TodoListsBuilder extends Component {
   }
 
   deleteTodoItemHandler = (listId, itemId) => {
-    debugger;
     const updatedTodoLists = this.state.todoLists;
     const listIndex = this.getTodoListIndex(listId);
     const todoListItems =  updatedTodoLists[listIndex].listItems;

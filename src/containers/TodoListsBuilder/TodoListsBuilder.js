@@ -1,5 +1,4 @@
 import React , {Component} from 'react'
-import classes from './TodoListsBuilder.module.css'
 import TodoLists from '../../components/TodoLists/TodoLists'
 import TodoAppActionBar from '../../components/TodoAppActionBar/TodoAppActionBar'
 import TodoItemActionsContext from '../../context/TodoItemActionsContext'
@@ -12,7 +11,7 @@ class TodoListsBuilder extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todoLists: [],
+      todoLists: [], // array of objects : each object contains details on todo list ( id, title, selected, todoItemsArray)
       showTodoListAddDataModal: false,
       showTodoListDeleteModal: false,
     }
@@ -122,7 +121,6 @@ class TodoListsBuilder extends Component {
     return(
       <React.Fragment>
         <TodoAppActionBar modalStateHandler={this.toggleModalDisplay} todoListsLength={this.state.todoLists.length} />
-        <div className={classes.todoListsContainer}>
           <TodoItemActionsContext.Provider value={{ toggleTodoItemCheckedHandler: this.toggleTodoItemCheckedHandler,
                                                     markCompleteTodoItemHandler: this.markCompleteTodoItemHandler ,
                                                     deleteTodoItemHandler: this.deleteTodoItemHandler ,
@@ -131,7 +129,6 @@ class TodoListsBuilder extends Component {
                         addNewTodoItemHandler= {this.addNewTodoItemHandler}
                         toggleModalDisplay={this.toggleModalDisplay} />
           </TodoItemActionsContext.Provider>
-        </div>
         {showTodoListAddDataModal && <AddNewTodoListModal addNewTodoListHandler={this.addNewTodoListHandler} 
                                                           modalStateHandler={this.toggleModalDisplay}/>}
         {showTodoListDeleteModal && <DeleteTodoListModal deleteSelectedTodoListHandler={this.deleteSelectedTodoListHandler} 

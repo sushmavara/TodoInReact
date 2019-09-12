@@ -85,6 +85,4 @@ TodoList.defaultProps = {
   addNewTodoItemHandler : noop,
 }
 
-
-
 export default TodoList;
